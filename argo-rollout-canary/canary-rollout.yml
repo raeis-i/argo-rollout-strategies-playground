@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: canary-rolling-update
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      maxSurge: 0           
+      maxUnavailable: 1
+      steps:
+        - setWeight: 20      
+        - pause: {}          
+        - setWeight: 40      
+        - pause: {}          
+        - setWeight: 60      
+        - pause: {}
+        - setWeight: 80      
+        - pause: {}
+        - setWeight: 100     
+  selector:
+    matchLabels:
+      app: canary-rolling-update
+  template:
+    metadata:
+      labels:
+        app: canary-rolling-update
+    spec:
+      containers:
+      - name: canary-rolling-update
+        image: samraeisi/simple-blue-green-app:v1
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: PAGE_COLOR
+          value: "blue"  # You can change this based on your environment needs
+        ports:
+        - containerPort: 8080

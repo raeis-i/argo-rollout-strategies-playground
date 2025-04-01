@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blue-green-ingress
+spec:
+  rules:
+  - host: "bluegreen.local" 
+    http:
+      paths:
+      - path: /active
+        pathType: Prefix
+        backend:
+          service:
+            name: rollout-bluegreen-active
+            port:
+              number: 8080
+      - path: /preview
+        pathType: Prefix
+        backend:
+          service:
+            name: rollout-bluegreen-preview
+            port:
+              number: 8080

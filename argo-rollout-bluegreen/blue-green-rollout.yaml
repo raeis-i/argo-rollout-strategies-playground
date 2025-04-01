@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: blue-green-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: blue-green-deployment
+  template:
+    metadata:
+      labels:
+        app: blue-green-deployment
+    spec:
+      containers:
+      - name: blue-green
+        image: samraeisi/simple-blue-green-app:v1 
+        imagePullPolicy: IfNotPresent 
+        env:
+        - name: PAGE_COLOR
+          value: "blue"  # Set default value to "blue" or "green" based on your need
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen:
+      activeService: rollout-bluegreen-active
+      previewService: rollout-bluegreen-preview
+      autoPromotionEnabled: false
+      #autoPromotionSeconds: 60  # Works if autoPromotionEnabled is true it promotes after 60 seconds.
