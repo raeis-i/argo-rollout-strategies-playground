@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: canary-rolling-update
 spec:
-  replicas: 5
+  replicas: 4
   strategy:
     canary:
       maxSurge: 0           
