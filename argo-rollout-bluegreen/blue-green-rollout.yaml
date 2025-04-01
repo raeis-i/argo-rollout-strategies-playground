@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: blue-green-deployment
 spec:
-  replicas: 5
+  replicas: 4
   selector:
     matchLabels:
       app: blue-green-deployment
